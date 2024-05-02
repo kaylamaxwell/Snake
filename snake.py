@@ -3,15 +3,16 @@
 import pygame as pg
 from random import randrange
 
-WINDOW = 1000
-TILE_SIZE = 50
-RANGE = (TILE_SIZE // 2, WINDOW - TILE_SIZE // 2, TILE_SIZE)
-get_random_position = lambda: [randrange(*RANGE), randrange(*RANGE)]
-snake = pg.rect.Rect([0, 0, TILE_SIZE - 2, TILE_SIZE - 2])
+WINDOW: int = 1000
+TILE_SIZE: int = 50
+RANGE: tuple = (TILE_SIZE // 2, WINDOW - TILE_SIZE // 2, TILE_SIZE)
+get_random_position :list = lambda: [randrange(*RANGE), randrange(*RANGE)]
+snake: set = pg.rect.Rect([0, 0, TILE_SIZE - 2, TILE_SIZE - 2])
 snake.center = get_random_position()
-length = 1
-segments = [snake.copy()]
-snake_dir = (0, 0)
+length: int = 1
+segments: list = [snake.copy()]
+snake_dir: tuple = (0, 0)
+time_step: int
 time, time_step = 0, 110
 food = snake.copy()
 food.center = get_random_position()
@@ -21,7 +22,7 @@ dirs = {pg.K_w: 1, pg.K_s: 1, pg.K_a: 1, pg.K_d: 1}
 
 # Initialize pygame and font
 pg.init()
-font = pg.font.Font(None, 36)  # Change the font size as needed
+font = pg.font.SysFont("cambria", 36)
 
 # Define game states
 START_SCREEN = 0
@@ -34,7 +35,7 @@ high_score = 0
 
 
 # Load high score from file
-def load_high_score():
+def load_high_score() -> None:
     global high_score
     try:
         with open("high_score.txt", "r") as file:
@@ -44,7 +45,7 @@ def load_high_score():
 
 
 # Save high score to file
-def save_high_score():
+def save_high_score() -> None:
     global high_score
     with open("high_score.txt", "w") as file:
         file.write(str(high_score))
@@ -54,7 +55,7 @@ def save_high_score():
 load_high_score()
 
 
-def show_start_screen():
+def show_start_screen() -> None:
     screen.fill('black')
 
     # Render and display the game title
@@ -110,7 +111,7 @@ def show_start_screen():
                 waiting = False
 
 
-def show_end_screen():
+def show_end_screen() -> None:
     global high_score
     screen.fill('black')
 
@@ -148,7 +149,7 @@ def show_end_screen():
                     return False  # Quit the game
 
 
-def restart_game():
+def restart_game() -> None:
     global current_score, snake, segments, snake_dir, length, food
     current_score = 0
     snake.center = get_random_position()
