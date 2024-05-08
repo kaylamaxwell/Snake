@@ -3,20 +3,23 @@ from random import randrange
 
 
 class GUI:
-    def __init__(self):
+    def __init__(self) -> None:
+        """
+        Initializes the game
+        """
         pg.init()
 
-        self.WINDOW = 1000
-        self.TILE_SIZE = 50
-        self.RANGE = (self.TILE_SIZE // 2, self.WINDOW - self.TILE_SIZE // 2, self.TILE_SIZE)
+        self.WINDOW: int = 1000
+        self.TILE_SIZE:int = 50
+        self.RANGE: tuple = (self.TILE_SIZE // 2, self.WINDOW - self.TILE_SIZE // 2, self.TILE_SIZE)
         self.get_random_position = lambda: [randrange(*self.RANGE), randrange(*self.RANGE)]
         self.snake = pg.Rect(0, 0, self.TILE_SIZE - 2, self.TILE_SIZE - 2)
         self.snake.center = self.get_random_position()
-        self.length = 1
-        self.segments = [self.snake.copy()]
-        self.snake_dir = (0, 0)
-        self.time_step = 110
-        self.time = 0
+        self.length: int = 1
+        self.segments: list = [self.snake.copy()]
+        self.snake_dir: tuple = (0, 0)
+        self.time_step: int = 110
+        self.time: int = 0
         self.food = self.snake.copy()
         self.food.center = self.get_random_position()
         self.screen = pg.display.set_mode((self.WINDOW, self.WINDOW))
@@ -25,29 +28,38 @@ class GUI:
         self.dirs = {pg.K_w: 1, pg.K_s: 1, pg.K_a: 1, pg.K_d: 1}
 
         # Define game states
-        self.START_SCREEN = 0
-        self.GAMEPLAY = 1
-        self.END_SCREEN = 2
+        self.START_SCREEN: int = 0
+        self.GAMEPLAY: int = 1
+        self.END_SCREEN: int = 2
 
         self.game_state = self.START_SCREEN
-        self.current_score = 0
-        self.high_score = 0
+        self.current_score: int = 0
+        self.high_score: int = 0
 
         # Load high score from file
         self.load_high_score()
 
-    def load_high_score(self):
+    def load_high_score(self) -> None:
+        """
+        Loads the high score
+        """
         try:
             with open("high_score.txt", "r") as file:
                 self.high_score = int(file.read())
         except FileNotFoundError:
             self.high_score = 0
 
-    def save_high_score(self):
+    def save_high_score(self) -> None:
+        """
+        Saves the high score
+        """
         with open("high_score.txt", "w") as file:
             file.write(str(self.high_score))
 
-    def show_start_screen(self):
+    def show_start_screen(self) -> None:
+        """
+        Shows the start screen
+        """
         self.screen.fill((0, 0, 0))
 
         # Render and display the game title
@@ -102,7 +114,10 @@ class GUI:
                 if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
                     waiting = False
 
-    def show_end_screen(self):
+    def show_end_screen(self) -> None:
+        """
+        Shows the end screen
+        """
         self.screen.fill((0, 0, 0))
 
         # Display game over text
@@ -139,7 +154,10 @@ class GUI:
                         waiting = False
                         return False  # Quit the game
 
-    def restart_game(self):
+    def restart_game(self) -> None:
+        """
+        Restarts the game
+        """
         self.current_score = 0
         self.snake.center = self.get_random_position()
         self.segments = [self.snake.copy()]
